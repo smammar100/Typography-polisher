@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "typography-polisher": {
+      "source": "smammar100/Typography-polisher",
+      "sourceType": "github",
+      "computedHash": "f56f03dff03e881defb88479f4e95d3a01ed8d63c98e1a48bfacc0caaeb222f6"
+    }
+  }
+}

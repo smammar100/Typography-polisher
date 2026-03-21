@@ -1,65 +1,139 @@
-import Image from "next/image";
+"use client"
+
+import { ConductorHero } from "@/components/conductor-hero"
+import { ConductorHowItWorks } from "@/components/conductor-how-it-works"
+import { ConductorFaq } from "@/components/conductor-faq"
+import { BeforeAfter } from "@/components/before-after"
+import { RuleCard } from "@/components/rule-card"
+import { AgentGrid } from "@/components/agent-grid"
+import { BrowserTable } from "@/components/browser-table"
+import { CopyButton } from "@/components/copy-button"
+import { rules } from "@/lib/examples"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
+const installTabs = [
+  {
+    id: "skills",
+    label: "Skills CLI",
+    cmd: "npx skills add smammar100/Typography-polisher",
+  },
+  {
+    id: "claude",
+    label: "Claude Code",
+    cmd: 'mkdir -p ~/.claude/skills/typography-polisher && curl -sL https://raw.githubusercontent.com/smammar100/Typography-polisher/main/SKILL.md -o ~/.claude/skills/typography-polisher/SKILL.md',
+  },
+  {
+    id: "cursor",
+    label: "Cursor",
+    cmd: "cp SKILL.md .cursor/rules/typography-polisher.mdc",
+  },
+  {
+    id: "windsurf",
+    label: "Windsurf",
+    cmd: "cp SKILL.md .windsurfrules",
+  },
+  {
+    id: "manual",
+    label: "Manual",
+    cmd: "git clone https://github.com/smammar100/Typography-polisher.git && cd Typography-polisher && ./install.sh",
+  },
+]
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div>
+      {/* Hero */}
+      <ConductorHero />
+
+      {/* Before & After */}
+      <section className="w-full bg-[var(--bg)] py-16">
+        <div className="mx-auto max-w-2xl px-6">
+          <h2 className="mb-8 font-mono text-sm font-medium text-[var(--text)] underline underline-offset-4">
+            See the difference
+          </h2>
+          <BeforeAfter />
+        </div>
+      </section>
+
+      {/* How it works */}
+      <ConductorHowItWorks />
+
+      {/* 15 Rules */}
+      <section className="w-full bg-[var(--bg)] py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-2xl">
+            <h2 className="mb-2 font-mono text-sm font-medium text-[var(--text)] underline underline-offset-4">
+              All 15 rules
+            </h2>
+            <p className="mb-8 font-mono text-sm text-[var(--text-muted)]">
+              Zero configuration. Every rule runs automatically.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {rules.map((rule, i) => (
+              <RuleCard key={rule.number} index={i} {...rule} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Agent Compatibility */}
+      <section className="w-full bg-[var(--bg)] py-16">
+        <div className="mx-auto max-w-7xl px-6">
+          <AgentGrid />
+        </div>
+      </section>
+
+      {/* Install */}
+      <section className="w-full bg-[var(--bg)] py-16">
+        <div className="mx-auto max-w-2xl px-6">
+          <h2 className="mb-2 font-mono text-sm font-medium text-[var(--text)] underline underline-offset-4">
+            Get started in 10 seconds
+          </h2>
+          <p className="mb-8 font-mono text-sm text-[var(--text-muted)]">
+            Pick your agent and run one&nbsp;command.
           </p>
+          <Tabs defaultValue="skills">
+            <TabsList className="h-auto flex-wrap bg-[var(--surface)] border border-[var(--border)]">
+              {installTabs.map((t) => (
+                <TabsTrigger
+                  key={t.id}
+                  value={t.id}
+                  className="font-mono text-xs data-[state=active]:bg-[var(--accent)]/15 data-[state=active]:text-[var(--accent)]"
+                >
+                  {t.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {installTabs.map((t) => (
+              <TabsContent key={t.id} value={t.id}>
+                <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--code-bg)] px-4 py-3 font-mono text-sm">
+                  <code className="flex-1 overflow-x-auto text-[var(--text)] whitespace-pre">
+                    {t.cmd}
+                  </code>
+                  <CopyButton text={t.cmd} />
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Browser Support */}
+      <section className="w-full bg-[var(--bg)] py-16">
+        <div className="mx-auto max-w-2xl px-6">
+          <h2 className="mb-2 font-mono text-sm font-medium text-[var(--text)] underline underline-offset-4">
+            Browser support
+          </h2>
+          <p className="mb-8 font-mono text-sm text-[var(--text-muted)]">
+            Every character renders&nbsp;everywhere.
+          </p>
+          <BrowserTable />
         </div>
-      </main>
+      </section>
+
+      {/* FAQ + CTA */}
+      <ConductorFaq />
     </div>
-  );
+  )
 }
